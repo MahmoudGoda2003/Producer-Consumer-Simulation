@@ -1,6 +1,12 @@
 package com.example.ProducerConsumer.ProducerConsumer;
 
+import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
+
+import javax.swing.text.AbstractDocument;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class Manager
 {
@@ -8,11 +14,67 @@ public class Manager
     private int NodeIDCounter = 0;
     private int ProductIDCounter = 0;
     private HashMap<Integer, Node> Map = new HashMap();
+    private List<AddProductToRootRequest> Requests = new ArrayList<>();
+    private Queuer Root;
+    private Date StartingDate;
+
+    public Manager()
+    {
+        this.StartingDate = new Date();
+    }
+
+    public void RestartSimulation()
+    {
+        this.ClearProgram();
+        for (AddProductToRootRequest request : this.Requests)
+            request.RunRequest();
+    }
+
+    private void ClearProgram()
+    {
+        this.StopAllMachineThread();
+        this.ClearAllQueues();
+    }
+
+    private void StopAllMachineThread()
+    {
+        Map.forEach((i, node) -> {
+            if (node instanceof Queuer) return;
+            Machine machine = (Machine) node;
+            machine.StopThread();
+        });
+    }
+
+    private void ClearAllQueues()
+    {
+
+        Map.forEach((i, node) -> {
+            if (node instanceof Machine) return;
+            Queuer queuer = (Queuer) node;
+            queuer.ClearQueue();
+        });
+    }
+
+    public void AddProduct(Product product)
+    {
+        this.Root.HandleProduct(product);
+        this.CreateRequestAndPutInRequestList(product);
+    }
+
+    private void CreateRequestAndPutInRequestList(Product product)
+    {
+        Date currentDate = new Date();
+        long timeInMillisecond = currentDate.getTime() - this.StartingDate.getTime();
+
+        AddProductToRootRequest request = new AddProductToRootRequest(product, timeInMillisecond, this);
+        this.Requests.add(request);
+    }
 
     public void AddProduct()
     {
         int ProductID = this.GetAndIncreamentProcutID();
         Product product = new Product(ProductID);
+        this.AddProduct(product);
     }
 
     public void AddQueuer()
@@ -22,6 +84,8 @@ public class Manager
         this.AddNodeToMap(queuer);
     }
 
+
+
     public void AddMachine()
     {
         int id = this.GetAndIncreamentNodeID();
@@ -29,7 +93,7 @@ public class Manager
         this.AddNodeToMap(machine);
     }
 
-    public void AddEdge(String FirstNodeString, String SecondNodeString)
+    public void AddEdge(int FirstNodeString, int SecondNodeString)
     {
         Node FirstNode = this.Map.get(FirstNodeString);
         Node SecondNode = this.Map.get(SecondNodeString);
@@ -38,7 +102,7 @@ public class Manager
         SecondNode.AddInEdge(FirstNode);
     }
 
-    public void RemoveEdge(String FirstNodeString, String SecondNodeString)
+    public void RemoveEdge(int FirstNodeString, int SecondNodeString)
     {
         Node FirstNode = this.Map.get(FirstNodeString);
         Node SecondNode = this.Map.get(SecondNodeString);
@@ -72,5 +136,6 @@ public class Manager
     public void StartSimulation()
     {
         this.SimulationGoing = true;
+        this.Root.StartSimulation();
     }
 }

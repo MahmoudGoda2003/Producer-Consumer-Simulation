@@ -6,10 +6,22 @@ public class Machine extends Node implements Runnable
 {
     private Thread mythread;
     private Product myProduct;
+    private long MachineTimeInMilliseconds;
+
+    public Machine(int id, long machineTime)
+    {
+        super(id);
+        this.MachineTimeInMilliseconds = machineTime;
+
+        mythread = new Thread(this);
+    }
 
     public Machine(int id)
     {
         super(id);
+        int Range = 10;
+        this.MachineTimeInMilliseconds = this.GetRandomTimeInMilliseconds(Range);
+
         mythread = new Thread(this);
     }
 
@@ -29,14 +41,18 @@ public class Machine extends Node implements Runnable
     @Override
     public void run()
     {
-        long randomtime = this.GetRandomTime();
         try
         {
-            Thread.sleep(randomtime);
+            Thread.sleep(this.MachineTimeInMilliseconds);
         }
         catch(Exception e)
         {}
         this.AfterOperationgOnProduct();
+    }
+
+    public void StopThread()
+    {
+        this.mythread.interrupt();
     }
 
     private void AfterOperationgOnProduct()
@@ -86,10 +102,10 @@ public class Machine extends Node implements Runnable
         this.SetColor(color);
     }
 
-    public long GetRandomTime()
+    public long GetRandomTimeInMilliseconds(int rangeInSeconds)
     {
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 10);
-        long randomtime = randomNum * 1000;
+        int randomNumInSeconds = ThreadLocalRandom.current().nextInt(0, rangeInSeconds);
+        long randomtime = randomNumInSeconds * 1000;
         return randomtime;
     }
 

@@ -1,6 +1,8 @@
 package com.example.ProducerConsumer.ProducerConsumer;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class Queuer extends Node
@@ -28,6 +30,27 @@ public class Queuer extends Node
 
         if (CheckMachinesAndHandleProduct(product) == false)
             this.AddToQeue(product);
+    }
+
+    public void InitializeQueuer(List<Product> list)
+    {
+        for (Product product : list)
+            this.AddToQeue(product);
+    }
+
+    public void ClearQueue()
+    {
+        this.productList.clear();
+    }
+
+    public void StartSimulation()
+    {
+        Queue<Product> temp = new LinkedList<>();
+        while (!productList.isEmpty())
+            temp.add(productList.poll());
+
+        for (Product product : temp)
+            this.HandleProduct(product);
     }
 
     private boolean CheckMachinesAndHandleProduct(Product product)

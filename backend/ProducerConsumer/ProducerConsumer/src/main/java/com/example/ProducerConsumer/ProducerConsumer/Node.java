@@ -11,6 +11,7 @@ public abstract class Node
     protected List<Node> NextNodes = new ArrayList<>();
     protected List<Node> PreviousNodes = new ArrayList<>();
 
+    public Node(){}
     public Node(int id)
     {
         this.ID = id;
