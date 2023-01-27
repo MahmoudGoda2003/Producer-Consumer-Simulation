@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Machine extends Node implements Runnable
 {
-    private Thread mythread;
+    private final Thread mythread;
     private Product myProduct;
     private long MachineTimeInMilliseconds;
 
@@ -34,6 +34,7 @@ public class Machine extends Node implements Runnable
     {
         this.SetProduct(product);
         this.GiveSameColorAsProduct();
+
         Thread thread = this.mythread;
         thread.run();
     }
