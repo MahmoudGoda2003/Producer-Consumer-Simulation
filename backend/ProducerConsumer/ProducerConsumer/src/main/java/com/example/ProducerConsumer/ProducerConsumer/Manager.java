@@ -7,20 +7,38 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Manager
 {
-    private boolean SimulationGoing = false;
     private int NodeIDCounter = 0;
     private int ProductIDCounter = 0;
     private HashMap<Integer, Node> Map = new HashMap();
     private List<AddProductToRootRequest> Requests = new ArrayList<>();
     private Queuer Root;
     private Date StartingDate;
+    private int NumberOfProducts;
 
-    public Manager()
+    public Manager(int numberOfProducts)
     {
         this.StartingDate = new Date();
+        this.NumberOfProducts = numberOfProducts;
+        AddingProducts.SetAddingProducts(this, this.NumberOfProducts);
+    }
+
+    public void StartSimulation()
+    {
+        AddingProducts.GetAddingProductsInstance().StartAddingProductsSimulation();
+    }
+
+    public void PauseAddingProducts()
+    {
+        AddingProducts.GetAddingProductsInstance().PauseAddingProducts();
+    }
+
+    public void ResumeAddingProducts()
+    {
+        AddingProducts.GetAddingProductsInstance().Resume();
     }
 
     public void RestartSimulation()
@@ -61,6 +79,13 @@ public class Manager
         this.CreateRequestAndPutInRequestList(product);
     }
 
+    public void AddProduct()
+    {
+        int ProductID = this.GetAndIncreamentProcutID();
+        Product product = new Product(ProductID);
+        this.AddProduct(product);
+    }
+
     private void CreateRequestAndPutInRequestList(Product product)
     {
         Date currentDate = new Date();
@@ -70,21 +95,12 @@ public class Manager
         this.Requests.add(request);
     }
 
-    public void AddProduct()
-    {
-        int ProductID = this.GetAndIncreamentProcutID();
-        Product product = new Product(ProductID);
-        this.AddProduct(product);
-    }
-
     public void AddQueuer()
     {
         int id = this.GetAndIncreamentNodeID();
         Queuer queuer = new Queuer(id);
         this.AddNodeToMap(queuer);
     }
-
-
 
     public void AddMachine()
     {
@@ -131,11 +147,5 @@ public class Manager
     private int GetAndIncreamentProcutID()
     {
         return this.ProductIDCounter++;
-    }
-
-    public void StartSimulation()
-    {
-        this.SimulationGoing = true;
-        this.Root.StartSimulation();
     }
 }

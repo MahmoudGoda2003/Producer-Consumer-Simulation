@@ -13,14 +13,14 @@ public class Machine extends Node implements Runnable
         super(id);
         this.MachineTimeInMilliseconds = machineTime;
 
-        mythread = new Thread(this);
+        mythread = new Thread(this, "Thread " + this.toString());
     }
 
     public Machine(int id)
     {
         super(id);
         int Range = 10;
-        this.MachineTimeInMilliseconds = this.GetRandomTimeInMilliseconds(Range);
+        this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds(Range);
 
         mythread = new Thread(this);
     }
@@ -100,13 +100,6 @@ public class Machine extends Node implements Runnable
     {
         String color = this.myProduct.GetColor();
         this.SetColor(color);
-    }
-
-    public long GetRandomTimeInMilliseconds(int rangeInSeconds)
-    {
-        int randomNumInSeconds = ThreadLocalRandom.current().nextInt(0, rangeInSeconds);
-        long randomtime = randomNumInSeconds * 1000;
-        return randomtime;
     }
 
     @Override
