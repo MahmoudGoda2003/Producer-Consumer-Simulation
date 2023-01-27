@@ -40,16 +40,25 @@ public class Manager
 
     public void StartSimulation()
     {
-        AddingProducts.GetAddingProductsInstance().StartAddingProductsSimulation();
+        List<AddProductToRootRequest> RandomRequests = this.GetRandomRequests();
+        //AddingProducts.GetAddingProductsInstance().StartAddingProductsSimulation();
+        AddingProducts.SetAddingProducts(this, this.NumberOfProducts, RandomRequests).run();
     }
 
     public void RestartSimulation()
     {
         List<AddProductToRootRequest> OldRequest = Manager.ClearProgramThreadsAndQueuesAndGetRequest();
         AddingProducts.SetAddingProducts(this, this.NumberOfProducts, OldRequest).run();
-//        for (AddProductToRootRequest request : OldRequest) {
-//            request.RunRequest();
-//        }
+    }
+
+    private List<AddProductToRootRequest> GetRandomRequests()
+    {
+        List<AddProductToRootRequest> list = new ArrayList<>();
+        for (int i = 0; i < this.NumberOfProducts; i++)
+        {
+            list.add(AddProductToRootRequest.CreateRandomRequest(this));
+        }
+        return list;
     }
 
     public void PauseAddingProducts()
