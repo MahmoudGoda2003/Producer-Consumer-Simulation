@@ -37,10 +37,11 @@ public class Machine extends Node implements Runnable
     {
         this.SetProduct(product);
         this.GiveSameColorAsProduct();
-        this.PrintHandlingObjectMessage();
+
 
         Thread thread = this.mythread;
         thread.run();
+
     }
 
     @Override
@@ -52,6 +53,7 @@ public class Machine extends Node implements Runnable
         }
         catch(Exception e)
         {}
+        this.PrintHandlingObjectMessage();
         this.AfterOperationgOnProduct();
     }
 
@@ -93,7 +95,7 @@ public class Machine extends Node implements Runnable
 
     public void PrintHandlingObjectMessage()
     {
-        System.out.println("Machine " + this.toString() + " Handling Product " + this.myProduct.toString());
+        System.out.printf("Machine %s Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
     }
 
     public void ClearProductAndGetReady()

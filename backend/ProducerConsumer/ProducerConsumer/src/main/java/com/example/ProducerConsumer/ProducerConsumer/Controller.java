@@ -18,4 +18,11 @@ public class Controller
         builder.build(data);
         Manager.getManger().StartSimulation();
     }
+    @PostMapping("/Replay")
+    @ResponseBody
+    public void Replay()
+    {
+        Manager.getManger().RestartSimulation();
+    }
+
 }

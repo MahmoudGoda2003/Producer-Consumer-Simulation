@@ -25,7 +25,7 @@ public class Manager
 
     public static Manager SetManager(int numberOfProducts)
     {
-        Manager.ClearProgramThreadsAndQueues();
+        Manager.ClearProgramThreadsAndQueuesAndGetRequest();
         Manager.myManager = new Manager(numberOfProducts);
         return Manager.myManager;
     }
@@ -52,18 +52,30 @@ public class Manager
 
     public void RestartSimulation()
     {
-        Manager.ClearProgramThreadsAndQueues();
-        for (AddProductToRootRequest request : this.Requests)
+        List<AddProductToRootRequest> OldRequest = Manager.ClearProgramThreadsAndQueuesAndGetRequest();
+        for (AddProductToRootRequest request : OldRequest) {
             request.RunRequest();
+        }
     }
 
-    private static void ClearProgramThreadsAndQueues()
+    private static List<AddProductToRootRequest> ClearProgramThreadsAndQueuesAndGetRequest()
     {
         Manager manager = Manager.getManger();
-        if (manager == null) return;
+        if (manager == null) return new ArrayList<>();
         manager.StopAllMachineThread();
         manager.ClearAllQueues();
         AddingProducts.GetAddingProductsInstance().StopThread();
+        List<AddProductToRootRequest> temp = manager.CopyRequest();
+        manager.ClearAllRequests();
+        return temp;
+    }
+
+    private List<AddProductToRootRequest> CopyRequest(){
+        List<AddProductToRootRequest> temp = new ArrayList<>();
+        this.Requests.forEach((request)->{
+            temp.add(request);
+        });
+        return temp;
     }
 
     private void StopAllMachineThread()
@@ -82,6 +94,11 @@ public class Manager
             Queuer queuer = (Queuer) node;
             queuer.ClearQueue();
         });
+    }
+
+    private void ClearAllRequests()
+    {
+        this.Requests.clear();
     }
 
     public void AddProduct(Product product)

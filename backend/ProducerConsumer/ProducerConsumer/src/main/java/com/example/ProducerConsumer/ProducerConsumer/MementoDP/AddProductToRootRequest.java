@@ -32,6 +32,6 @@ public class AddProductToRootRequest implements Runnable
         }
         catch (Exception e)
         {}
-        manager.AddProduct();
+        manager.AddProduct(this.product);
     }
 }
