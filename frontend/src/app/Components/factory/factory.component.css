@@ -1,0 +1,55 @@
+.factory {
+    border-radius: 8px;
+    width: 1430px;
+    height: 560px;
+    position: relative;
+    top: 20px;
+    left: 50%;
+    -ms-transform: translateY(-20px);
+    transform: translateY(-20px);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    background-color: rgb(255, 255, 255);
+}
+
+
+.toolbar {
+    position: absolute;
+    bottom: 0%;
+    height: 100px;
+    width: 100%;
+    background-color: rgb(163, 90, 16);
+
+}
+
+.button{
+    background-color: rgb(60, 61, 62);
+    position: relative;
+    border: none;
+    color: white;
+    width: 160px;
+    height: 35px;
+    border-radius: 7px;
+    padding: 12px 16px;
+    font-size: 16px;
+    margin-top: 6px;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+#run{
+    margin-left: 40px;
+}
+
+table {
+    display: inline-block;
+}
+
+.numberFill{
+    width: 78px;
+    height: 30px;
+    margin: 0px;
+    margin-top: 6px;
+    margin-left: 6px;
+    border-radius: 5px;
+}

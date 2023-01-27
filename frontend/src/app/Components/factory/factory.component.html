@@ -1,0 +1,29 @@
+<div class = "factory" id = "factory">
+
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<div class = "toolbar">
+    <table>
+        <tr>
+            <td><button class="button" id="addMachine" (click)="addMachine()">Add Machine</button></td>
+            <td><button class="button" id="addQueue" (click)="addQueue()">Add Queue</button></td>
+            <td><button class="button" id="addConnector" (click)="addConnection()">Add Connector</button></td>
+        </tr>
+        <tr>
+            <td><button class="button" id="select" (click)="selectComponent2()">Select</button></td>
+            <td><button class="button" id="delete" (click)="deleteComponent()">Delete</button></td>
+            <td><button class="button" id="deleteAll" (click)="deleteAll()">Delete All</button></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <label id ="label" style="margin-top: 20px;">Products: </label>
+            <input type="number" class="numberFill" id="numberFill" placeholder="0" required>
+        </tr>
+        <tr>
+            <td><button class="button" id="startSimulation" (click)="simulate()">Start Simulation</button></td>
+            <td><button class="button" id="pauseSimulation" (click)="pause()">Pause Simulation</button></td>
+        </tr>
+    </table>
+</div>
