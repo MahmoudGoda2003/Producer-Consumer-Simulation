@@ -7,17 +7,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @RequestMapping("/Produce")
-public class Controller {
-    private Manager manager;
+public class Controller
+{
     
     @PostMapping("/Simulate")
     @ResponseBody
-    public void Simulate(@RequestBody String data){
+    public void Simulate(@RequestBody String data)
+    {
         BuildCircuit builder = new BuildCircuit();
-        this.manager = builder.build(data);
-        this.manager.StartSimulation();
+        builder.build(data);
+        Manager.getManger().StartSimulation();
     }
-
-
-
 }

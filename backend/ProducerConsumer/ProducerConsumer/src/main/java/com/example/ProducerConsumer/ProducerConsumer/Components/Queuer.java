@@ -1,8 +1,8 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import com.example.ProducerConsumer.ProducerConsumer.Components.Machine;
 import com.example.ProducerConsumer.ProducerConsumer.Components.Node;
 import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Machine;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
+import com.example.ProducerConsumer.ProducerConsumer.Components.Machine;
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Manager
 {
+    private static Manager myManager;
     private int ProductIDCounter = 0;
     private HashMap<String, Node> Map = new HashMap();
     private List<AddProductToRootRequest> Requests = new ArrayList<>();
@@ -16,11 +17,22 @@ public class Manager
     private Date StartingDate;
     private int NumberOfProducts;
 
-    public Manager(int numberOfProducts)
+    private Manager(int numberOfProducts)
     {
         this.StartingDate = new Date();
         this.NumberOfProducts = numberOfProducts;
         AddingProducts.SetAddingProducts(this, this.NumberOfProducts);
+    }
+
+    public static Manager SetManager(int numberOfProducts)
+    {
+        Manager.myManager = new Manager(numberOfProducts);
+        return Manager.myManager;
+    }
+
+    public static Manager getManger()
+    {
+        return Manager.myManager;
     }
 
     public void StartSimulation()

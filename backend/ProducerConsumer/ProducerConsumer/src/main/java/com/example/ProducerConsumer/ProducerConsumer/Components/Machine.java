@@ -1,4 +1,7 @@
-package com.example.ProducerConsumer.ProducerConsumer;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
+
+import com.example.ProducerConsumer.ProducerConsumer.Components.Node;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -8,7 +11,7 @@ public class Machine extends Node implements Runnable
     private Product myProduct;
     private long MachineTimeInMilliseconds;
 
-    public Machine(int id, long machineTime)
+    public Machine(String id, long machineTime)
     {
         super(id);
         this.MachineTimeInMilliseconds = machineTime;
@@ -16,7 +19,7 @@ public class Machine extends Node implements Runnable
         mythread = new Thread(this, "Thread " + this.toString());
     }
 
-    public Machine(int id)
+    public Machine(String id)
     {
         super(id);
         int Range = 10;
