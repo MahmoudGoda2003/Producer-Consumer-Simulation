@@ -1,6 +1,5 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import com.example.ProducerConsumer.ProducerConsumer.Components.Machine;
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +25,7 @@ public class Manager
 
     public static Manager SetManager(int numberOfProducts)
     {
+        Manager.ClearProgramThreadsAndQueues();
         Manager.myManager = new Manager(numberOfProducts);
         return Manager.myManager;
     }
@@ -52,15 +52,17 @@ public class Manager
 
     public void RestartSimulation()
     {
-        this.ClearProgram();
+        Manager.ClearProgramThreadsAndQueues();
         for (AddProductToRootRequest request : this.Requests)
             request.RunRequest();
     }
 
-    private void ClearProgram()
+    private static void ClearProgramThreadsAndQueues()
     {
-        this.StopAllMachineThread();
-        this.ClearAllQueues();
+        Manager manager = Manager.getManger();
+        if (manager == null) return;
+        manager.StopAllMachineThread();
+        manager.ClearAllQueues();
         AddingProducts.GetAddingProductsInstance().StopThread();
     }
 
@@ -75,7 +77,6 @@ public class Manager
 
     private void ClearAllQueues()
     {
-
         Map.forEach((i, node) -> {
             if (node instanceof Machine) return;
             Queuer queuer = (Queuer) node;
