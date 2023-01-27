@@ -15,10 +15,10 @@ public abstract class Node
     public Node(String id)
     {
         this.ID = id;
-        this.SetDefultColor();
+        this.SetDefaultColor();
     }
 
-    protected abstract void SetDefultColor();
+    protected abstract void SetDefaultColor();
 
     public abstract int GetProductsNo();
 

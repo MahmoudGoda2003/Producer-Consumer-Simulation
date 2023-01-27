@@ -1,6 +1,7 @@
 package com.example.ProducerConsumer.ProducerConsumer.MementoDP;
 
 import com.example.ProducerConsumer.ProducerConsumer.Components.Manager;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
 import com.example.ProducerConsumer.ProducerConsumer.Components.Time;
 
 import java.util.List;
@@ -17,8 +18,7 @@ public class AddingProductsInRandom extends AddingProducts implements Runnable
     {
         for (int i = 0; i < this.NumberOfProducts; i++)
         {
-            //long time = Time.GetRandomTimeInMilliseconds();
-            long time = 5000;
+            long time = Time.GetRandomTimeInMilliseconds();
             try
             {
                 this.myThread.sleep(time);

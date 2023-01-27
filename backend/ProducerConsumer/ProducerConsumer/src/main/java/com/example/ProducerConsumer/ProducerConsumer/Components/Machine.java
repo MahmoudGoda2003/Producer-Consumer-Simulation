@@ -1,13 +1,8 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import com.example.ProducerConsumer.ProducerConsumer.Components.Node;
-import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
-
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Machine extends Node implements Runnable, SubjectOfObserver
 {
-    private final Thread mythread;
+    private Thread mythread;
     private Product myProduct;
     private final long MachineTimeInMilliseconds;
 
@@ -22,25 +17,28 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     public Machine(String id)
     {
         super(id);
-        this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds();
+        //this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds();
+        this.MachineTimeInMilliseconds = 3000;
 
         mythread = new Thread(this);
     }
 
-    public void SetProduct(Product product)
+    public synchronized void SetProduct(Product product)
     {
         this.myProduct = product;
     }
 
-    public void HandleRequest(Product product)
+    public synchronized void HandleRequest(Product product)
     {
+        System.out.println(product);
         this.SetProduct(product);
         this.GiveSameColorAsProduct();
 
-
+        this.mythread = new Thread(this);
         Thread thread = this.mythread;
+        System.out.println(this.myProduct);
         thread.run();
-
+        thread.interrupt();
     }
 
     @Override
@@ -58,31 +56,34 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         }
         catch(Exception e)
         {}
+
+        System.out.println(this.myProduct);
+
         this.PrintFinishingObjectMessage();
         this.AfterOperationgOnProduct();
     }
 
-    public void StopThread()
+    public synchronized void StopThread()
     {
         this.mythread.interrupt();
     }
 
-    private void AfterOperationgOnProduct()
+    private synchronized void AfterOperationgOnProduct()
     {
-        this.SetDefultColor();
+        this.SetDefaultColor();
         this.SendObjectToNextQueuer();
         this.ClearProductAndGetReady();
         this.NotifyObservers();
     }
 
-    private void SendObjectToNextQueuer()
+    private synchronized void SendObjectToNextQueuer()
     {
         Queuer queuer = (Queuer) this.NextNodes.get(0);
         queuer.HandleProduct(this.myProduct);
     }
 
     @Override
-    public void NotifyObservers()
+    public synchronized void NotifyObservers()
     {
         for (Node node : this.PreviousNodes)
         {
@@ -95,39 +96,38 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         }
     }
 
-    public boolean IsCurrentlyHandlingProduct()
+    public synchronized boolean IsCurrentlyHandlingProduct()
     {
         return this.myProduct != null;
     }
 
-    public void PrintStartingObjectMessage()
+    public synchronized void PrintStartingObjectMessage()
     {
-        System.out.printf("Machine %s Starting to Handle Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
+        System.out.printf("Machine %s Starting to Handle Product %s time%n", this.toString(), this.myProduct.toString());
     }
 
-    public void PrintFinishingObjectMessage()
+    public synchronized void PrintFinishingObjectMessage()
     {
         System.out.printf("Machine %s Finished Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
     }
 
-    public void ClearProductAndGetReady()
+    public synchronized void ClearProductAndGetReady()
     {
         this.myProduct = null;
     }
 
-    private void GiveSameColorAsProduct()
+    private synchronized void GiveSameColorAsProduct()
     {
         String color = this.myProduct.GetColor();
         this.SetColor(color);
     }
 
     @Override
-    protected void SetDefultColor(){
+    protected void SetDefaultColor(){
         this.SetColor(MyColor.GetDefaultColorForM());
     }
 
-    @Override
-    public String toString()
+    public synchronized String toString()
     {
         return "M" + this.GetID();
     }

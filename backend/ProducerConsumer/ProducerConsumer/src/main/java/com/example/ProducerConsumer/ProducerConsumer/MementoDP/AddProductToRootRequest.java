@@ -2,6 +2,7 @@ package com.example.ProducerConsumer.ProducerConsumer.MementoDP;
 
 import com.example.ProducerConsumer.ProducerConsumer.Components.Manager;
 import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Time;
 
 public class AddProductToRootRequest implements Runnable
 {
@@ -16,12 +17,18 @@ public class AddProductToRootRequest implements Runnable
         this.manager = manager;
     }
 
-    public void RunRequest()
+    public static AddProductToRootRequest CreateRandomRequest(Manager manager)
     {
-        Thread thread = new Thread(this);
-        thread.run();
+        //Long time = Time.GetRandomTimeInMilliseconds();
+        Long time = 1000l;
+        return new AddProductToRootRequest(null, time, manager);
     }
 
+    public void RunRequest()
+    {
+        Thread two = new Thread(this);
+        two.start();
+    }
 
     @Override
     public void run()
@@ -32,6 +39,9 @@ public class AddProductToRootRequest implements Runnable
         }
         catch (Exception e)
         {}
-        manager.AddProduct(this.product);
+        if (this.product != null)
+            manager.AddProduct(this.product);
+        else
+            manager.AddProduct();
     }
 }
