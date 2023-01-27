@@ -15,8 +15,12 @@ public abstract class Node
     public Node(String id)
     {
         this.ID = id;
-        this.Color = MyColor.GetDefaultColor();
+        this.SetDefultColor();
     }
+
+    protected abstract void SetDefultColor();
+
+    public abstract int GetProductsNo();
 
     public String GetID()
     {

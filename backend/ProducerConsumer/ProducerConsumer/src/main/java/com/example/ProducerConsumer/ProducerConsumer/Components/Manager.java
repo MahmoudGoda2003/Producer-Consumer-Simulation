@@ -3,6 +3,8 @@ package com.example.ProducerConsumer.ProducerConsumer.Components;
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddingProducts;
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddingProductsInRandom;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +43,25 @@ public class Manager
     public void StartSimulation()
     {
         AddingProducts.GetAddingProductsInstance().StartAddingProductsSimulation();
+    }
+
+    public JSONObject GetState(){
+        JSONObject State = new JSONObject();
+        List<String> machines = new ArrayList<>();
+        List<String> machineStates = new ArrayList<>();
+        List<String> queues = new ArrayList<>();
+        List<Integer> queueProducts = new ArrayList<>();
+        this.Map.forEach((Id, Node) ->
+        {
+            if(!Node.GetColor().equals("yellow")){
+                machines.add(Id);
+                machineStates.add(Node.GetColor());
+            }else{
+                queues.add(Id);
+                queueProducts.add(Node.GetProductsNo());
+            }
+        });
+        return State.put("state","running").put("machines",machines).put("machineStates",machineStates).put("queues",queues).put("queueProducts",queueProducts);
     }
 
     public void RestartSimulation()

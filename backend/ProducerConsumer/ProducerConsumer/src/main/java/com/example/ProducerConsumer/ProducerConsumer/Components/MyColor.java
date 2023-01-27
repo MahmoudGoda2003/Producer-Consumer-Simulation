@@ -6,7 +6,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MyColor
 {
-    private static String DefaultColor = "grey";
+    private static String DefaultColorForM = "grey";
+    private static String DefaultColorForQ = "yellow";
     private static List<String> colors = Arrays.asList("red", "blue", "black", "white", "cyan", "purple");
 
     public static String GetRandomColor()
@@ -15,8 +16,13 @@ public class MyColor
         return MyColor.colors.get(randomNum);
     }
 
-    public static String GetDefaultColor()
+    public static String GetDefaultColorForM()
     {
-        return MyColor.DefaultColor;
+        return MyColor.DefaultColorForM;
+    }
+
+    public static String GetDefaultColorForQ()
+    {
+        return MyColor.DefaultColorForQ;
     }
 }

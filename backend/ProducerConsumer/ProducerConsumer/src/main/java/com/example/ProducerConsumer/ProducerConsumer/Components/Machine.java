@@ -44,6 +44,11 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     }
 
     @Override
+    public int GetProductsNo() {
+        return -1;
+    }
+
+    @Override
     public void run()
     {
         this.PrintStartingObjectMessage();
@@ -64,6 +69,7 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
 
     private void AfterOperationgOnProduct()
     {
+        this.SetDefultColor();
         this.SendObjectToNextQueuer();
         this.ClearProductAndGetReady();
         this.NotifyObservers();
@@ -113,6 +119,11 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     {
         String color = this.myProduct.GetColor();
         this.SetColor(color);
+    }
+
+    @Override
+    protected void SetDefultColor(){
+        this.SetColor(MyColor.GetDefaultColorForM());
     }
 
     @Override

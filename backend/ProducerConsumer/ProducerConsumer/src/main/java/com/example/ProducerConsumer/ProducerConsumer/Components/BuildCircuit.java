@@ -18,7 +18,7 @@ public class BuildCircuit {
         List<String> Machines = new Gson().fromJson(Data.getJSONArray("machines").toString(), List.class);
         List<String> Queues = new Gson().fromJson(Data.getJSONArray("queues").toString(), List.class);
         List<String> ToConnectors = new Gson().fromJson(Data.getJSONArray("toConnectors").toString(), List.class);
-        List<String> FromConnectors = new Gson().fromJson(Data.getJSONArray("FromConnectors").toString(), List.class);
+        List<String> FromConnectors = new Gson().fromJson(Data.getJSONArray("fromConnectors").toString(), List.class);
         AddMachines(Machines);
         AddQueuesAndSetRoot(Queues);
         AddEdge(FromConnectors, ToConnectors);

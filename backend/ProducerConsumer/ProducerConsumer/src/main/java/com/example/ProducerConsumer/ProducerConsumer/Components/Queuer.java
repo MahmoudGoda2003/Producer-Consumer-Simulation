@@ -49,6 +49,16 @@ public class Queuer extends Node
         return false;
     }
 
+    @Override
+    protected void SetDefultColor(){
+        this.SetColor(MyColor.GetDefaultColorForQ());
+    }
+
+    @Override
+    public int GetProductsNo() {
+        return this.productQueue.size();
+    }
+
     private void AddToQeue(Product Product)
     {
         this.productQueue.add(Product);
