@@ -18,23 +18,22 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     {
         super(id);
         this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds();
+        //this.MachineTimeInMilliseconds = 5000;
         mythread = new Thread(this);
     }
 
-    public synchronized void SetProduct(Product product)
+    public void SetProduct(Product product)
     {
         this.myProduct = product;
     }
 
-    public synchronized void HandleRequest(Product product)
+    public void HandleRequest(Product product)
     {
-        System.out.println(product);
         this.SetProduct(product);
         this.GiveSameColorAsProduct();
 
         this.mythread = new Thread(this);
         Thread thread = this.mythread;
-        System.out.println(this.myProduct);
         thread.run();
         thread.interrupt();
     }
@@ -55,18 +54,16 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         catch(Exception e)
         {}
 
-        System.out.println(this.myProduct);
-
         this.PrintFinishingObjectMessage();
         this.AfterOperationgOnProduct();
     }
 
-    public synchronized void StopThread()
+    public void StopThread()
     {
         this.mythread.interrupt();
     }
 
-    private synchronized void AfterOperationgOnProduct()
+    private void AfterOperationgOnProduct()
     {
         this.SetDefaultColor();
         this.SendObjectToNextQueuer();
@@ -74,14 +71,14 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         this.NotifyObservers();
     }
 
-    private synchronized void SendObjectToNextQueuer()
+    private void SendObjectToNextQueuer()
     {
         Queuer queuer = (Queuer) this.NextNodes.get(0);
         queuer.HandleProduct(this.myProduct);
     }
 
     @Override
-    public synchronized void NotifyObservers()
+    public void NotifyObservers()
     {
         for (Node node : this.PreviousNodes)
         {
@@ -94,27 +91,27 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         }
     }
 
-    public synchronized boolean IsCurrentlyHandlingProduct()
+    public boolean IsCurrentlyHandlingProduct()
     {
         return this.myProduct != null;
     }
 
-    public synchronized void PrintStartingObjectMessage()
+    public void PrintStartingObjectMessage()
     {
         System.out.printf("Machine %s Starting to Handle Product %s time%n", this.toString(), this.myProduct.toString());
     }
 
-    public synchronized void PrintFinishingObjectMessage()
+    public void PrintFinishingObjectMessage()
     {
         System.out.printf("Machine %s Finished Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
     }
 
-    public synchronized void ClearProductAndGetReady()
+    public void ClearProductAndGetReady()
     {
         this.myProduct = null;
     }
 
-    private synchronized void GiveSameColorAsProduct()
+    private void GiveSameColorAsProduct()
     {
         String color = this.myProduct.GetColor();
         this.SetColor(color);
@@ -125,7 +122,7 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         this.SetColor(MyColor.GetDefaultColorForM());
     }
 
-    public synchronized String toString()
+    public String toString()
     {
         return "M" + this.GetID();
     }

@@ -44,7 +44,6 @@ public abstract class AddingProducts implements Runnable
         this.myThread.interrupt();
     }
 
-    //@Override
     public abstract void run();
 
     public static AddingProducts SetAddingProducts(Manager m, int numberOfProducts)
@@ -58,7 +57,6 @@ public abstract class AddingProducts implements Runnable
         AddingProducts.myProduct = new AddingProductsInRestart(m, numberOfProducts, Requests);
         return AddingProducts.myProduct;
     }
-
 
     public static AddingProducts GetAddingProductsInstance()
     {
