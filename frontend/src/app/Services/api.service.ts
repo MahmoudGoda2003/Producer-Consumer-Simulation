@@ -21,7 +21,7 @@ export class APIService {
   }
 
   pauseSimulation():Observable<string> {
-    return this.http.get<string>(this.url + 'Pause');
+    return this.http.get<string>(this.url + 'Stop');
   }
 
   polling(): Observable<Network> {
