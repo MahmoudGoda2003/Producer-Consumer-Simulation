@@ -1,4 +1,6 @@
-package com.example.ProducerConsumer.ProducerConsumer;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
+
+import com.example.ProducerConsumer.ProducerConsumer.Components.MyColor;
 
 public class Product
 {

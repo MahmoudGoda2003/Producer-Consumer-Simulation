@@ -1,28 +1,26 @@
-package com.example.ProducerConsumer.ProducerConsumer;
-
-import java.util.concurrent.ThreadLocalRandom;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
 
 public class Machine extends Node implements Runnable
 {
-    private Thread mythread;
+    private Thread myThread;
     private Product myProduct;
     private long MachineTimeInMilliseconds;
 
-    public Machine(int id, long machineTime)
+    public Machine(String id, long machineTime)
     {
         super(id);
         this.MachineTimeInMilliseconds = machineTime;
 
-        mythread = new Thread(this, "Thread " + this.toString());
+        myThread = new Thread(this, "Thread " + this.toString());
     }
 
-    public Machine(int id)
+    public Machine(String id)
     {
         super(id);
         int Range = 10;
         this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds(Range);
 
-        mythread = new Thread(this);
+        myThread = new Thread(this);
     }
 
     public void SetProduct(Product product)
@@ -34,7 +32,7 @@ public class Machine extends Node implements Runnable
     {
         this.SetProduct(product);
         this.GiveSameColorAsProduct();
-        Thread thread = this.mythread;
+        Thread thread = this.myThread;
         thread.run();
     }
 
@@ -47,15 +45,15 @@ public class Machine extends Node implements Runnable
         }
         catch(Exception e)
         {}
-        this.AfterOperationgOnProduct();
+        this.AfterOperatingOnProduct();
     }
 
     public void StopThread()
     {
-        this.mythread.interrupt();
+        this.myThread.interrupt();
     }
 
-    private void AfterOperationgOnProduct()
+    private void AfterOperatingOnProduct()
     {
         this.SendObjectToNextQueuer();
         this.ClearProductAndGetReady();

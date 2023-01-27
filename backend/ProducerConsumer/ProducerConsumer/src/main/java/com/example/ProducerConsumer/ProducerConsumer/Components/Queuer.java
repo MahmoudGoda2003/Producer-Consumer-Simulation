@@ -1,6 +1,9 @@
-package com.example.ProducerConsumer.ProducerConsumer;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import java.util.ArrayList;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Machine;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Node;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -9,7 +12,7 @@ public class Queuer extends Node
 {
     private Queue<Product> productList = new LinkedList<>();
 
-    public Queuer(int id)
+    public Queuer(String id)
     {
         super(id);
     }

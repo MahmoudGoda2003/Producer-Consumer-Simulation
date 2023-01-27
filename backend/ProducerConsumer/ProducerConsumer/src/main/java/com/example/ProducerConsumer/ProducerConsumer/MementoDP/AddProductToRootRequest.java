@@ -1,9 +1,7 @@
 package com.example.ProducerConsumer.ProducerConsumer.MementoDP;
 
-import com.example.ProducerConsumer.ProducerConsumer.Manager;
-import com.example.ProducerConsumer.ProducerConsumer.Product;
-import com.example.ProducerConsumer.ProducerConsumer.Queuer;
-import com.sun.source.tree.TryTree;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Manager;
+import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
 
 public class AddProductToRootRequest implements Runnable
 {
