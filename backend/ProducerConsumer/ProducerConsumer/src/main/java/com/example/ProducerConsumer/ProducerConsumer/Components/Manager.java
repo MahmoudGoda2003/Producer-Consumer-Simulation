@@ -1,19 +1,16 @@
-package com.example.ProducerConsumer.ProducerConsumer;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
 
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
 
-import javax.swing.text.AbstractDocument;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Manager
 {
-    private int NodeIDCounter = 0;
     private int ProductIDCounter = 0;
-    private HashMap<Integer, Node> Map = new HashMap();
+    private HashMap<String, Node> Map = new HashMap();
     private List<AddProductToRootRequest> Requests = new ArrayList<>();
     private Queuer Root;
     private Date StartingDate;
@@ -52,6 +49,7 @@ public class Manager
     {
         this.StopAllMachineThread();
         this.ClearAllQueues();
+        AddingProducts.GetAddingProductsInstance().StopThread();
     }
 
     private void StopAllMachineThread()
@@ -95,21 +93,19 @@ public class Manager
         this.Requests.add(request);
     }
 
-    public void AddQueuer()
+    public void AddQueuer(String id)
     {
-        int id = this.GetAndIncreamentNodeID();
         Queuer queuer = new Queuer(id);
         this.AddNodeToMap(queuer);
     }
 
-    public void AddMachine()
+    public void AddMachine(String id)
     {
-        int id = this.GetAndIncreamentNodeID();
         Machine machine = new Machine(id);
         this.AddNodeToMap(machine);
     }
 
-    public void AddEdge(int FirstNodeString, int SecondNodeString)
+    public void AddEdge(String FirstNodeString, String SecondNodeString)
     {
         Node FirstNode = this.Map.get(FirstNodeString);
         Node SecondNode = this.Map.get(SecondNodeString);
@@ -118,7 +114,7 @@ public class Manager
         SecondNode.AddInEdge(FirstNode);
     }
 
-    public void RemoveEdge(int FirstNodeString, int SecondNodeString)
+    public void RemoveEdge(String FirstNodeString, String SecondNodeString)
     {
         Node FirstNode = this.Map.get(FirstNodeString);
         Node SecondNode = this.Map.get(SecondNodeString);
@@ -129,19 +125,14 @@ public class Manager
 
     public void AddNodeToMap(Node node)
     {
-        int id = node.GetID();
+        String id = node.GetID();
         this.Map.put(id, node);
     }
 
     public void RemoveNodeFromMap(Node node)
     {
-        int id = node.GetID();
+        String id = node.GetID();
         this.Map.remove(id);
-    }
-
-    private int GetAndIncreamentNodeID()
-    {
-        return this.NodeIDCounter++;
     }
 
     private int GetAndIncreamentProcutID()

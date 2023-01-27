@@ -1,13 +1,12 @@
-package com.example.ProducerConsumer.ProducerConsumer;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MyColor
 {
-    private static String Defaultcolor = "grey";
+    private static String DefaultColor = "grey";
     private static List<String> colors = Arrays.asList("red", "blue", "black", "white", "cyan", "purple");
 
     public static String GetRandomColor()

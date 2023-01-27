@@ -1,28 +1,28 @@
-package com.example.ProducerConsumer.ProducerConsumer;
+package com.example.ProducerConsumer.ProducerConsumer.Components;
 
 public class AddingProducts implements Runnable
 {
-    private static AddingProducts myproduct;
+    private static AddingProducts myProduct;
     private final int NumberOfProducts;
     private final Manager manager;
-    private final Thread mythread;
+    private final Thread myThread;
 
     private AddingProducts(Manager m, int numberOfProducts)
     {
         this.manager = m;
         this.NumberOfProducts = numberOfProducts;
-        mythread = new Thread(this);
+        myThread = new Thread(this);
     }
 
     public void StartAddingProductsSimulation()
     {
-        this.mythread.start();
+        this.myThread.start();
     }
 
     public void PauseAddingProducts()
     {
         try {
-            this.mythread.wait();
+            this.myThread.wait();
         }
         catch(Exception e)
         {
@@ -31,9 +31,13 @@ public class AddingProducts implements Runnable
 
     public void Resume()
     {
-        this.mythread.notify();
+        this.myThread.notify();
     }
 
+    public void StopThread()
+    {
+        this.myThread.interrupt();
+    }
 
     @Override
     public void run()
@@ -44,7 +48,7 @@ public class AddingProducts implements Runnable
             long time = Time.GetRandomTimeInMilliseconds(6);
             try
             {
-                this.mythread.sleep(time);
+                this.myThread.sleep(time);
             }
             catch(Exception e)
             {
@@ -54,12 +58,15 @@ public class AddingProducts implements Runnable
 
     public static AddingProducts SetAddingProducts(Manager m, int numberOfProducts)
     {
-        AddingProducts.myproduct = new AddingProducts(m, numberOfProducts);
-        return AddingProducts.myproduct;
+        if (AddingProducts.myProduct != null)
+            return AddingProducts.myProduct;
+
+        AddingProducts.myProduct = new AddingProducts(m, numberOfProducts);
+        return AddingProducts.myProduct;
     }
 
     public static AddingProducts GetAddingProductsInstance()
     {
-        return AddingProducts.myproduct;
+        return AddingProducts.myProduct;
     }
 }
