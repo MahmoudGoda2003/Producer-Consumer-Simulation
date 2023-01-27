@@ -1,16 +1,11 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import com.example.ProducerConsumer.ProducerConsumer.Components.Node;
-import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
-import com.example.ProducerConsumer.ProducerConsumer.Components.Machine;
-
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class Queuer extends Node
 {
-    private Queue<Product> productList = new LinkedList<>();
+    private Queue<Product> productQueue = new LinkedList<>();
 
     public Queuer(String id)
     {
@@ -25,43 +20,27 @@ public class Queuer extends Node
 
     public void HandleProduct(Product product)
     {
-        if (this.productList.isEmpty() == false)
+        if (this.productQueue.isEmpty() == false)
         {
             this.AddToQeue(product);
             return;
         }
 
-        if (CheckMachinesAndHandleProduct(product) == false)
-            this.AddToQeue(product);
-    }
-
-    public void InitializeQueuer(List<Product> list)
-    {
-        for (Product product : list)
+        if (CheckIfAMachineIsFreeAndMakeItHandleProduct(product) == false)
             this.AddToQeue(product);
     }
 
     public void ClearQueue()
     {
-        this.productList.clear();
+        this.productQueue.clear();
     }
 
-    public void StartSimulation()
-    {
-        Queue<Product> temp = new LinkedList<>();
-        while (!productList.isEmpty())
-            temp.add(productList.poll());
-
-        for (Product product : temp)
-            this.HandleProduct(product);
-    }
-
-    private boolean CheckMachinesAndHandleProduct(Product product)
+    private boolean CheckIfAMachineIsFreeAndMakeItHandleProduct(Product product)
     {
         for (Node node : this.NextNodes)
         {
             Machine machine = (Machine) node;
-            if (machine.IsCurrentlyHandlingProduct())
+            if (machine.IsCurrentlyHandlingProduct() == false)
             {
                 machine.HandleRequest(product);
                 return true;
@@ -72,16 +51,16 @@ public class Queuer extends Node
 
     private void AddToQeue(Product Product)
     {
-        this.productList.add(Product);
+        this.productQueue.add(Product);
     }
 
     public Product GetProductFromQueue()
     {
-        return this.productList.poll();
+        return this.productQueue.poll();
     }
 
     public boolean HasProducts()
     {
-        return this.productList.size() != 0;
+        return this.productQueue.size() != 0;
     }
 }

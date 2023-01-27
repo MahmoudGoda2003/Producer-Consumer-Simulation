@@ -7,7 +7,7 @@ public class Time
     public static long GetRandomTimeInMilliseconds(int rangeInSeconds)
     {
         int randomNumInSeconds = ThreadLocalRandom.current().nextInt(0, rangeInSeconds);
-        long randomtzime = randomNumInSeconds * 1000;
+        long randomtime = randomNumInSeconds * 1000;
         return randomtime;
     }
 }
