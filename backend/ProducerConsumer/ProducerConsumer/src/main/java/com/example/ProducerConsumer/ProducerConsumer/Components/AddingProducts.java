@@ -44,7 +44,6 @@ public class AddingProducts implements Runnable
     {
         for (int i = 0; i < this.NumberOfProducts; i++)
         {
-            this.manager.AddProduct();
             long time = Time.GetRandomTimeInMilliseconds(6);
             try
             {
@@ -53,6 +52,8 @@ public class AddingProducts implements Runnable
             catch(Exception e)
             {
             }
+
+            this.manager.AddProduct();
         }
     }
 

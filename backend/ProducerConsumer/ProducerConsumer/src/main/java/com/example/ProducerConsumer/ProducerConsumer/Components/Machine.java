@@ -5,7 +5,7 @@ import com.example.ProducerConsumer.ProducerConsumer.Components.Product;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Machine extends Node implements Runnable
+public class Machine extends Node implements Runnable, SubjectOfObserver
 {
     private final Thread mythread;
     private Product myProduct;
@@ -75,6 +75,7 @@ public class Machine extends Node implements Runnable
         queuer.HandleProduct(this.myProduct);
     }
 
+    @Override
     public void NotifyObservers()
     {
         for (Node node : this.PreviousNodes)

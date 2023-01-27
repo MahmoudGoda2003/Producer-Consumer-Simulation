@@ -103,8 +103,8 @@ public class Manager
 
     public void AddProduct(Product product)
     {
-        this.Root.HandleProduct(product);
         this.CreateRequestAndPutInRequestList(product);
+        this.Root.HandleProduct(product);
     }
 
     public void AddProduct()
