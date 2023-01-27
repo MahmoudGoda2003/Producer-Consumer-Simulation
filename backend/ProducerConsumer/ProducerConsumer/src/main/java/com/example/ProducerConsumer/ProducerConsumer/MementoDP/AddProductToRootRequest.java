@@ -19,8 +19,8 @@ public class AddProductToRootRequest implements Runnable
 
     public static AddProductToRootRequest CreateRandomRequest(Manager manager)
     {
-        Long time = Time.GetRandomTimeInMilliseconds();
-        //Long time = 1000l;
+        //Long time = Time.GetRandomTimeInMilliseconds();
+        Long time = 1000l;
         return new AddProductToRootRequest(null, time, manager);
     }
 

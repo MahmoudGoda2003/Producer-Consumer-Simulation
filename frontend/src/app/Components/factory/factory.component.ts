@@ -167,6 +167,7 @@ export class FactoryComponent implements OnInit {
     
     this.machineCount = 1;
     this.queueCount = 1;
+    this.products = 0;
   }
 
   ngOnInit(): void {
@@ -198,27 +199,27 @@ export class FactoryComponent implements OnInit {
         switch(this.currentAction) {
           case 'machine':
             machineButton.style.background = 'grey';
-            queueButton.style.background = 'dark grey';
-            connectorButton.style.background = 'dark grey';
-            selectButton.style.background = 'dark grey';
+            queueButton.style.background = '#3C3D3E';
+            connectorButton.style.background = '#3C3D3E';
+            selectButton.style.background = '#3C3D3E';
             break;
           case 'queue':
-            machineButton.style.background = 'dark grey';
+            machineButton.style.background = '#3C3D3E';
             queueButton.style.background = 'grey';
-            connectorButton.style.background = 'dark grey';
-            selectButton.style.background = 'dark grey';
+            connectorButton.style.background = '#3C3D3E';
+            selectButton.style.background = '#3C3D3E';
             break;
           case 'connection':
-            machineButton.style.background = 'dark grey';
-            machineButton.style.background = 'dark grey';
-            machineButton.style.background = 'grey';
-            machineButton.style.background = 'dark grey';
+            machineButton.style.background = '#3C3D3E';
+            queueButton.style.background = '#3C3D3E';
+            connectorButton.style.background = 'grey';
+            selectButton.style.background = '#3C3D3E';
             break;
           case 'selection':
-            machineButton.style.background = 'dark grey';
-            machineButton.style.background = 'dark grey';
-            machineButton.style.background = 'dark grey';
-            machineButton.style.background = 'grey';
+            machineButton.style.background = '#3C3D3E';
+            queueButton.style.background = '#3C3D3E';
+            connectorButton.style.background = '#3C3D3E';
+            selectButton.style.background = 'grey';
             break;
           default:
         }
@@ -246,7 +247,6 @@ export class FactoryComponent implements OnInit {
     );
 
     this.tr.nodes([]);
-    this.selectComponent = false;
 
     if (selected![0] === undefined)
       return;
@@ -267,7 +267,6 @@ export class FactoryComponent implements OnInit {
       this.selectComponent = true;
       this.currentComponent = selected[0];
       this.tr.nodes([this.currentComponent]);
-      console.log("ggggggggggggggggggggggggg");
     }
   }
 
@@ -508,18 +507,13 @@ export class FactoryComponent implements OnInit {
       this.layer.add(queueGroup);
       this.layer.batchDraw();
     } else {
-      console.log(this.machines);
-      console.log(this.queues);
-      console.log(this.fromConnectors);
-      console.log(this.toConnectors);
-
-      this.simulate();
+      this.deleteComponent();
     }
   }
 
   simulate(){
     this.products = parseInt((<HTMLInputElement>document.getElementById("numberFill"))!.value);
-    
+    console.log((<HTMLInputElement>document.getElementById("numberFill"))!.value);
     this.apiService.startSimulation(this.products, this.machines, this.queues, this.fromConnectors, this.toConnectors).subscribe();
     this.poll();
   }
@@ -548,6 +542,7 @@ export class FactoryComponent implements OnInit {
   }
 
   pause(){
+    this.apiService.pauseSimulation().subscribe();
     clearInterval(this.simulation);
   }
 

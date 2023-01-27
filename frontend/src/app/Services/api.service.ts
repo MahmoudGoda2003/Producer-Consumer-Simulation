@@ -13,12 +13,15 @@ export class APIService {
   constructor(private http: HttpClient) {  }
 
   startSimulation(productsNo:number, machines:string[], queues:string[], fromConnectors:string[], toConnectors:string[]):Observable<string> {
-    console.log(fromConnectors, toConnectors);
-    return this.http.post<string>(this.url + 'Simulate', {"productsNo": 30, "machines":machines, "queues": queues, "fromConnectors":fromConnectors, "toConnectors":toConnectors});
+    return this.http.post<string>(this.url + 'Simulate', {"productsNo": productsNo, "machines":machines, "queues": queues, "fromConnectors":fromConnectors, "toConnectors":toConnectors});
   }
 
   restartSimulation():Observable<string> {
     return this.http.get<string>(this.url + 'Replay');
+  }
+
+  pauseSimulation():Observable<string> {
+    return this.http.get<string>(this.url + 'Pause');
   }
 
   polling(): Observable<Network> {

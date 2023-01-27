@@ -18,8 +18,11 @@
     </table>
     <table>
         <tr>
-            <label id ="label" style="margin-top: 20px;">Products: </label>
-            <input type="number" class="numberFill" id="numberFill" placeholder="0" required>
+            <td>
+                <label id ="label" style="margin-top: 20px;">Products: </label>
+                <input type="number" class="numberFill" id="numberFill" placeholder="0" required>
+            </td>
+            <td><button class="button" id="restartSimulation" (click)="reSimulate()">Restart Simulation</button></td>
         </tr>
         <tr>
             <td><button class="button" id="startSimulation" (click)="simulate()">Start Simulation</button></td>
