@@ -20,7 +20,7 @@ public class BuildCircuit {
         List<String> ToConnectors = new Gson().fromJson(Data.getJSONArray("toConnectors").toString(), List.class);
         List<String> FromConnectors = new Gson().fromJson(Data.getJSONArray("FromConnectors").toString(), List.class);
         AddMachines(Machines);
-        AddQueues(Queues);
+        AddQueuesAndSetRoot(Queues);
         AddEdge(FromConnectors, ToConnectors);
     }
 
@@ -31,10 +31,14 @@ public class BuildCircuit {
         });
     }
 
-    private void AddQueues(List<String> Queues)
+    private void AddQueuesAndSetRoot(List<String> Queues)
     {
+        String rootId = Queues.get(0);
         Queues.forEach((queue)->{
-            Manager.getManger().AddQueuer(queue);
+           Queuer queuer = Manager.getManger().AddQueuer(queue);
+           if (queue.equals(rootId)){
+               Manager.getManger().SetRoot(queuer);
+           }
         });
     }
 

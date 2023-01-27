@@ -106,10 +106,11 @@ public class Manager
         this.Requests.add(request);
     }
 
-    public void AddQueuer(String id)
+    public Queuer AddQueuer(String id)
     {
         Queuer queuer = new Queuer(id);
         this.AddNodeToMap(queuer);
+        return queuer;
     }
 
     public void AddMachine(String id)
@@ -125,6 +126,11 @@ public class Manager
 
         FirstNode.AddOutEdge(SecondNode);
         SecondNode.AddInEdge(FirstNode);
+    }
+
+    public void SetRoot(Queuer queuer)
+    {
+        this.Root = queuer;
     }
 
     public void RemoveEdge(String FirstNodeString, String SecondNodeString)

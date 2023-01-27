@@ -17,6 +17,6 @@ public class MyColor
 
     public static String GetDefaultColor()
     {
-        return MyColor.GetDefaultColor();
+        return MyColor.DefaultColor;
     }
 }

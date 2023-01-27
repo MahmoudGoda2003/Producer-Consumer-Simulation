@@ -52,6 +52,7 @@ public class Machine extends Node implements Runnable
         catch(Exception e)
         {}
         this.AfterOperationgOnProduct();
+        System.out.println(myProduct.GetID());
     }
 
     public void StopThread()
