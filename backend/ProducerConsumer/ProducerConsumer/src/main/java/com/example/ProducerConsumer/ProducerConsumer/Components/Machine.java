@@ -17,9 +17,7 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     public Machine(String id)
     {
         super(id);
-        //this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds();
-        this.MachineTimeInMilliseconds = 3000;
-
+        this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds();
         mythread = new Thread(this);
     }
 

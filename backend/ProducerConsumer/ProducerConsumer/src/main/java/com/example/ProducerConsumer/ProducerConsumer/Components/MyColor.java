@@ -8,7 +8,8 @@ public class MyColor
 {
     private static String DefaultColorForM = "grey";
     private static String DefaultColorForQ = "yellow";
-    private static List<String> colors = Arrays.asList("red", "blue", "black", "white", "cyan", "purple");
+    private static List<String> colors = Arrays.asList("red", "blue", "pink", "orange", "cyan", "purple", "green",
+            "magento");
 
     public static String GetRandomColor()
     {

@@ -61,11 +61,6 @@ public class Queuer extends Node
 
     private void AddToQeue(Product Product)
     {
-        if (Product == null)
-        {
-            int z = 0;
-            z++;
-        }
         this.productQueue.add(Product);
     }
 
