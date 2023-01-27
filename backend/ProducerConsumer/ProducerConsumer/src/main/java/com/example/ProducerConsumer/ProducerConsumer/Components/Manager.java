@@ -1,6 +1,9 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
 import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
+import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddingProducts;
+import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddingProductsInRandom;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +43,15 @@ public class Manager
         AddingProducts.GetAddingProductsInstance().StartAddingProductsSimulation();
     }
 
+    public void RestartSimulation()
+    {
+        List<AddProductToRootRequest> OldRequest = Manager.ClearProgramThreadsAndQueuesAndGetRequest();
+        AddingProducts.SetAddingProducts(this, this.NumberOfProducts, OldRequest).run();
+//        for (AddProductToRootRequest request : OldRequest) {
+//            request.RunRequest();
+//        }
+    }
+
     public void PauseAddingProducts()
     {
         AddingProducts.GetAddingProductsInstance().PauseAddingProducts();
@@ -50,13 +62,6 @@ public class Manager
         AddingProducts.GetAddingProductsInstance().Resume();
     }
 
-    public void RestartSimulation()
-    {
-        List<AddProductToRootRequest> OldRequest = Manager.ClearProgramThreadsAndQueuesAndGetRequest();
-        for (AddProductToRootRequest request : OldRequest) {
-            request.RunRequest();
-        }
-    }
 
     private static List<AddProductToRootRequest> ClearProgramThreadsAndQueuesAndGetRequest()
     {

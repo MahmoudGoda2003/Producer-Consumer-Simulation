@@ -9,7 +9,7 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
 {
     private final Thread mythread;
     private Product myProduct;
-    private long MachineTimeInMilliseconds;
+    private final long MachineTimeInMilliseconds;
 
     public Machine(String id, long machineTime)
     {
@@ -22,8 +22,7 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     public Machine(String id)
     {
         super(id);
-        int Range = 10;
-        this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds(Range);
+        this.MachineTimeInMilliseconds = Time.GetRandomTimeInMilliseconds();
 
         mythread = new Thread(this);
     }
@@ -47,13 +46,14 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     @Override
     public void run()
     {
+        this.PrintStartingObjectMessage();
         try
         {
             Thread.sleep(this.MachineTimeInMilliseconds);
         }
         catch(Exception e)
         {}
-        this.PrintHandlingObjectMessage();
+        this.PrintFinishingObjectMessage();
         this.AfterOperationgOnProduct();
     }
 
@@ -94,9 +94,14 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         return this.myProduct != null;
     }
 
-    public void PrintHandlingObjectMessage()
+    public void PrintStartingObjectMessage()
     {
-        System.out.printf("Machine %s Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
+        System.out.printf("Machine %s Starting to Handle Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
+    }
+
+    public void PrintFinishingObjectMessage()
+    {
+        System.out.printf("Machine %s Finished Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
     }
 
     public void ClearProductAndGetReady()
