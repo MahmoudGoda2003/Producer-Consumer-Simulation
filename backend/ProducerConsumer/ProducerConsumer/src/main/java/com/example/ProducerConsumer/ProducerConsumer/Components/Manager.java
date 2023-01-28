@@ -1,9 +1,7 @@
 package com.example.ProducerConsumer.ProducerConsumer.Components;
 
-import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProductToRootRequest;
-import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddingProducts;
-import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddingProductsInRandom;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddProcess;
+import com.example.ProducerConsumer.ProducerConsumer.MementoDP.AddRequest;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -14,23 +12,21 @@ import java.util.List;
 public class Manager
 {
     private static Manager myManager;
-    private int ProductIDCounter = 0;
+
     private HashMap<String, Node> Map = new HashMap();
-    private List<AddProductToRootRequest> Requests = new ArrayList<>();
     private Queuer Root;
     private Date StartingDate;
-    private int NumberOfProducts;
+    List<AddRequest> RequestList;
 
     private Manager(int numberOfProducts)
     {
         this.StartingDate = new Date();
-        this.NumberOfProducts = numberOfProducts;
-        AddingProducts.SetAddingProducts(this, this.NumberOfProducts);
+        this.RequestList = AddRequest.GetListOfRandomRequests(numberOfProducts);
     }
 
     public static Manager SetManager(int numberOfProducts)
     {
-        Manager.ClearProgramThreadsAndQueuesAndGetRequest();
+        //Manager.ClearProgramThreadsAndQueuesAndGetRequest();
         Manager.myManager = new Manager(numberOfProducts);
         return Manager.myManager;
     }
@@ -42,9 +38,8 @@ public class Manager
 
     public void StartSimulation()
     {
-        List<AddProductToRootRequest> RandomRequests = this.GetRandomRequests();
-        //AddingProducts.GetAddingProductsInstance().StartAddingProductsSimulation();
-        AddingProducts.SetAddingProducts(this, this.NumberOfProducts, RandomRequests).run();
+        AddProcess addProcess = new AddProcess(this.RequestList);
+        addProcess.RunAllAddRequests();
     }
 
     public JSONObject GetState(){
@@ -68,49 +63,31 @@ public class Manager
 
     public void RestartSimulation()
     {
-        List<AddProductToRootRequest> OldRequest = Manager.ClearProgramThreadsAndQueuesAndGetRequest();
-        AddingProducts.SetAddingProducts(this, this.NumberOfProducts, OldRequest).run();
+        this.StartSimulation();
     }
 
-    private List<AddProductToRootRequest> GetRandomRequests()
+//    public void PauseAddingProducts()
+//    {
+//        AddingProducts.GetAddingProductsInstance().PauseAddingProducts();
+//    }
+//
+//    public void ResumeAddingProducts()
+//    {
+//        AddingProducts.GetAddingProductsInstance().Resume();
+//    }
+
+    private void ClearProgramThreadsAndQueuesForRestart()
     {
-        List<AddProductToRootRequest> list = new ArrayList<>();
-        for (int i = 0; i < this.NumberOfProducts; i++)
-        {
-            list.add(AddProductToRootRequest.CreateRandomRequest(this));
-        }
-        return list;
+        this.StopAllMachineThread();
+        this.ClearAllQueues();
+        this.StopAddProcess();
     }
 
-    public void PauseAddingProducts()
+    public void StopAddProcess()
     {
-        AddingProducts.GetAddingProductsInstance().PauseAddingProducts();
-    }
-
-    public void ResumeAddingProducts()
-    {
-        AddingProducts.GetAddingProductsInstance().Resume();
-    }
-
-
-    private static List<AddProductToRootRequest> ClearProgramThreadsAndQueuesAndGetRequest()
-    {
-        Manager manager = Manager.getManger();
-        if (manager == null) return new ArrayList<>();
-        manager.StopAllMachineThread();
-        manager.ClearAllQueues();
-        AddingProducts.GetAddingProductsInstance().StopThread();
-        List<AddProductToRootRequest> temp = manager.CopyRequest();
-        manager.ClearAllRequests();
-        return temp;
-    }
-
-    private List<AddProductToRootRequest> CopyRequest(){
-        List<AddProductToRootRequest> temp = new ArrayList<>();
-        this.Requests.forEach((request)->{
-            temp.add(request);
+        this.RequestList.forEach((request)->{
+            request.StopRequest();
         });
-        return temp;
     }
 
     private void StopAllMachineThread()
@@ -131,31 +108,9 @@ public class Manager
         });
     }
 
-    private void ClearAllRequests()
-    {
-        this.Requests.clear();
-    }
-
     public void AddProduct(Product product)
     {
-        this.CreateRequestAndPutInRequestList(product);
         this.Root.HandleProduct(product);
-    }
-
-    public void AddProduct()
-    {
-        int ProductID = this.GetAndIncreamentProcutID();
-        Product product = new Product(ProductID);
-        this.AddProduct(product);
-    }
-
-    private void CreateRequestAndPutInRequestList(Product product)
-    {
-        Date currentDate = new Date();
-        long timeInMillisecond = currentDate.getTime() - this.StartingDate.getTime();
-
-        AddProductToRootRequest request = new AddProductToRootRequest(product, timeInMillisecond, this);
-        this.Requests.add(request);
     }
 
     public Queuer AddQueuer(String id)
@@ -180,34 +135,14 @@ public class Manager
         SecondNode.AddInEdge(FirstNode);
     }
 
-    public void SetRoot(Queuer queuer)
-    {
-        this.Root = queuer;
-    }
-
-    public void RemoveEdge(String FirstNodeString, String SecondNodeString)
-    {
-        Node FirstNode = this.Map.get(FirstNodeString);
-        Node SecondNode = this.Map.get(SecondNodeString);
-
-        FirstNode.RemoveOutEdge(SecondNode);
-        SecondNode.RemoveInEdge(FirstNode);
-    }
-
     public void AddNodeToMap(Node node)
     {
         String id = node.GetID();
         this.Map.put(id, node);
     }
 
-    public void RemoveNodeFromMap(Node node)
+    public void SetRoot(Queuer queuer)
     {
-        String id = node.GetID();
-        this.Map.remove(id);
-    }
-
-    private int GetAndIncreamentProcutID()
-    {
-        return this.ProductIDCounter++;
+        this.Root = queuer;
     }
 }

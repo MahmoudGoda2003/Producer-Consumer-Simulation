@@ -32,10 +32,7 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         this.SetProduct(product);
         this.GiveSameColorAsProduct();
 
-        this.mythread = new Thread(this);
-        Thread thread = this.mythread;
-        thread.run();
-        thread.interrupt();
+        mythread.start();
     }
 
     @Override
@@ -58,11 +55,6 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         this.AfterOperationgOnProduct();
     }
 
-    public void StopThread()
-    {
-        this.mythread.interrupt();
-    }
-
     private void AfterOperationgOnProduct()
     {
         this.SetDefaultColor();
@@ -83,10 +75,12 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
         for (Node node : this.PreviousNodes)
         {
             Queuer queuer = (Queuer) node;
-            if (queuer.HasProducts())
+            Product product = queuer.CheckQueueNotEmptyAndGetProduct();
+            // product may be null if queue is empty
+            if (product != null)
             {
-                this.HandleRequest(queuer.GetProductFromQueue());
-                break;
+                this.HandleRequest(product);
+                return;
             }
         }
     }
@@ -94,16 +88,6 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     public boolean IsCurrentlyHandlingProduct()
     {
         return this.myProduct != null;
-    }
-
-    public void PrintStartingObjectMessage()
-    {
-        System.out.printf("Machine %s Starting to Handle Product %s time%n", this.toString(), this.myProduct.toString());
-    }
-
-    public void PrintFinishingObjectMessage()
-    {
-        System.out.printf("Machine %s Finished Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
     }
 
     public void ClearProductAndGetReady()
@@ -115,6 +99,21 @@ public class Machine extends Node implements Runnable, SubjectOfObserver
     {
         String color = this.myProduct.GetColor();
         this.SetColor(color);
+    }
+
+    public void StopThread()
+    {
+        this.mythread.interrupt();
+    }
+
+    public void PrintStartingObjectMessage()
+    {
+        System.out.printf("Machine %s Starting to Handle Product %s time%n", this.toString(), this.myProduct.toString());
+    }
+
+    public void PrintFinishingObjectMessage()
+    {
+        System.out.printf("Machine %s Finished Handling Product %s time %s%n", this.toString(), this.myProduct.toString(), this.MachineTimeInMilliseconds);
     }
 
     @Override

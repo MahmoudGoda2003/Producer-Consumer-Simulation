@@ -13,12 +13,12 @@ public class Queuer extends Node
     }
 
     @Override
-    public String toString()
+    public synchronized String toString()
     {
         return "Q" + this.GetID();
     }
 
-    public void HandleProduct(Product product)
+    public synchronized void HandleProduct(Product product)
     {
         if (this.productQueue.isEmpty() == false)
         {
@@ -30,12 +30,18 @@ public class Queuer extends Node
             this.AddToQeue(product);
     }
 
-    public void ClearQueue()
+    public synchronized Product CheckQueueNotEmptyAndGetProduct()
+    {
+        if (this.productQueue.isEmpty()) return null;
+        return this.GetProductFromQueue();
+    }
+
+    public synchronized void ClearQueue()
     {
         this.productQueue.clear();
     }
 
-    private boolean CheckIfAMachineIsFreeAndMakeItHandleProduct(Product product)
+    private synchronized boolean CheckIfAMachineIsFreeAndMakeItHandleProduct(Product product)
     {
         for (Node node : this.NextNodes)
         {
@@ -50,26 +56,26 @@ public class Queuer extends Node
     }
 
     @Override
-    protected void SetDefaultColor(){
+    protected synchronized void SetDefaultColor(){
         this.SetColor(MyColor.GetDefaultColorForQ());
     }
 
     @Override
-    public int GetProductsNo() {
+    public synchronized int GetProductsNo() {
         return this.productQueue.size();
     }
 
-    private void AddToQeue(Product Product)
+    private synchronized void AddToQeue(Product Product)
     {
         this.productQueue.add(Product);
     }
 
-    public Product GetProductFromQueue()
+    public synchronized Product GetProductFromQueue()
     {
         return this.productQueue.poll();
     }
 
-    public boolean HasProducts()
+    public synchronized boolean HasProducts()
     {
         return this.productQueue.size() != 0;
     }

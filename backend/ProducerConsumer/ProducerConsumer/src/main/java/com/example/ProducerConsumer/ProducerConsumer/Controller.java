@@ -14,7 +14,7 @@ public class Controller
     @ResponseBody
     public void Simulate(@RequestBody String data)
     {
-        System.out.printf(data);
+        //System.out.printf(data);
         BuildCircuit builder = new BuildCircuit();
         builder.build(data);
         Manager.getManger().StartSimulation();
@@ -38,7 +38,7 @@ public class Controller
     @ResponseBody
     public void Stop()
     {
-        Manager.getManger().PauseAddingProducts();
+        Manager.getManger().StopAddProcess();
     }
 
 }
